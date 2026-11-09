@@ -12,7 +12,7 @@
 
 CSKH VinFast phải đọc khiếu nại của chủ xe, tra cứu thủ công qua nhiều hệ thống (CRM, DMS), tự phân loại lỗi (phần cứng, phần mềm, pin) rồi gán xưởng dịch vụ. Bước này tốn khoảng 25-40 phút mỗi ticket , làm chậm SLA và đẩy tỷ lệ khiếu nại leo thang lên khoảng 18%.
 
-Nhóm đề xuất một **LLM Feature kết hợp Rule** để trích xuất thông tin xe và mã lỗi, gợi ý phân loại và mức nghiêm trọng, đề xuất xưởng và soạn nháp phản hồi. **Nhân viên CSKH luôn duyệt trước khi gửi**, AI không được tự đóng ticket hay cam kết bảo hành. Nhóm đề xuất quyết định **GO với phạm vi hẹp** (prototype chạy ở chế độ bóng, chưa đưa vào vận hành thật), kèm điều kiện dừng rõ ràng.
+Nhóm đề xuất một **LLM Feature kết hợp Rule** để trích xuất thông tin xe và mã lỗi, gợi ý phân loại và mức nghiêm trọng, đề xuất xưởng và soạn nháp phản hồi. **Nhân viên CSKH luôn duyệt trước khi gửi**, AI không được tự đóng ticket hay cam kết bảo hành. Nhóm đề xuất quyết định **NOT YET**: hướng giải pháp phù hợp nhưng chưa có dữ liệu ticket thật, chưa có baseline và chưa trao đổi với người dùng cuối, nên cần hoàn tất các điều kiện này trước khi chuyển sang GO.
 
 ---
 
@@ -163,17 +163,29 @@ File `starter-code/prompt_prototype.py` là prototype prompt cho đúng bài to�
 | 2 | Rủi ro khi AI sai có trong tầm kiểm soát (HITL hoặc Fallback)? | ✅ **Có** | CSKH duyệt mọi tin gửi đi; từ khóa an toàn do Rule xử lý; có hàng chờ thủ công và quay về quy trình cũ khi AI lỗi. |
 | 3 | Stakeholder sẵn sàng thay đổi quy trình? | ❓ **Chưa biết** | Chưa trao đổi với CSKH và xưởng dịch vụ. Cần khảo sát sớm vì họ là người dùng cuối. |
 
-## 5.2. Quyết định: ✅ GO (phạm vi hẹp, chỉ prototype)
+## 5.2. Quyết định: ⏳ NOT YET (cần xác lập baseline và dữ liệu trước khi xây)
 
-Nhóm chọn **GO ở mức xây prototype với phạm vi hẹp**, theo đúng định nghĩa trong worksheet ("bắt đầu phát triển với scope hẹp"). Nhóm **chưa** đề xuất đưa vào vận hành thật, vì mục 1 trong checklist chưa đạt.
+Nhóm chọn **NOT YET**: hướng giải pháp (LLM Feature kết hợp Rule, có HITL) là phù hợp, nhưng nhóm **chưa đủ căn cứ để bắt đầu xây hệ thống thật**. Trong 3 câu hỏi của checklist, chỉ 1 câu đạt, 1 câu chưa đạt và 1 câu chưa có thông tin.
 
 **Lý do:**
-* Bài toán cụ thể, có người dùng rõ (CSKH), có metric đo được (thời gian xử lý, độ chính xác phân loại, tỷ lệ leo thang).
-* Rủi ro kiểm soát được nhờ HITL, Rule chặn phần an toàn và Fallback về quy trình cũ.
-* Chi phí thử nghiệm thấp: prototype chỉ cần LLM gọi qua API và vài trăm ticket mẫu.
-* Rule không thay thế được hoàn toàn: khiếu nại là văn bản tự do nên cần LLM để hiểu.
+* **Chưa có dữ liệu để test (checklist 1).** Nhóm chưa có ticket thật hay nhãn nhóm lỗi, nên chưa thể đo độ chính xác phân loại (mục tiêu ≥ 90%) hay recall nhóm an toàn (mục tiêu ≥ 99%).
+* **Chưa có baseline.** Mọi con số về thời gian xử lý (35 phút/ticket), tỷ lệ leo thang (18%) và khối lượng ticket đều là giả định. Không thể tuyên bố tiết kiệm bao nhiêu khi chưa đo hiện trạng.
+* **Chưa biết stakeholder có sẵn sàng đổi cách làm không (checklist 3).** Nhóm chưa trao đổi với CSKH và xưởng dịch vụ, là những người dùng cuối.
+* **Chưa được phê duyệt về dữ liệu khách hàng.** Dữ liệu ticket chứa VIN và thông tin cá nhân.
 
-**Phạm vi prototype:**
+**Điểm đã vững (lý do không phải NO-GO):**
+* Rủi ro khi AI sai trong tầm kiểm soát (checklist 2): CSKH duyệt mọi tin gửi đi, Rule chặn từ khóa an toàn, có Fallback về quy trình cũ.
+* Bài toán cụ thể, có người dùng rõ và metric đo được.
+* Khiếu nại là văn bản tự do nên cần LLM để hiểu; Rule không thay thế được hoàn toàn.
+* Kiểm tra ranh giới bằng prompt (mục 4) đã chạy 3/3 test tấn công, cho thấy hướng này khả thi về mặt kỹ thuật ở mức thăm dò.
+
+**Việc cần làm để chuyển từ NOT YET sang GO:**
+1. Xin 200-500 ticket đã ẩn danh, có nhãn nhóm lỗi, làm tập kiểm thử.
+2. Đo baseline: khối lượng ticket/ngày, thời gian từng bước, tỷ lệ leo thang.
+3. Trao đổi với CSKH và xưởng dịch vụ, xác nhận họ chấp nhận cách làm mới.
+4. VinFast phê duyệt về bảo mật dữ liệu khách hàng.
+
+**Phạm vi nếu chuyển sang GO (đề xuất ban đầu):**
 * Một nhóm lỗi (ví dụ lỗi pin) và một kênh tiếp nhận (App).
 * Chạy ở **chế độ bóng**: AI gợi ý song song, CSKH vẫn làm theo quy trình cũ, so sánh kết quả. Không gửi gì cho khách.
 
@@ -181,11 +193,6 @@ Nhóm chọn **GO ở mức xây prototype với phạm vi hẹp**, theo đúng 
 * Phân loại đúng nhóm lỗi dưới 80% trên tập kiểm thử có nhãn.
 * Bỏ sót bất kỳ ticket an toàn nào trong tập kiểm thử.
 * Thời gian CSKH duyệt và sửa gợi ý lâu hơn làm thủ công (khi đó AI không tiết kiệm được thời gian).
-
-**Điều kiện để chuyển sang NOT YET hoặc nâng lên pilot thật:**
-* Có dữ liệu ticket thật và baseline thời gian xử lý, tỷ lệ leo thang.
-* CSKH và xưởng dịch vụ đồng ý thay đổi cách làm việc.
-* VinFast phê duyệt về bảo mật dữ liệu khách hàng (VIN, thông tin cá nhân).
 
 ---
 
@@ -198,9 +205,3 @@ Nhóm chọn **GO ở mức xây prototype với phạm vi hẹp**, theo đúng 
 | CSKH tin AI quá mức và duyệt không đọc | Trung bình | Hiển thị độ tin cậy; kiểm tra ngẫu nhiên; đào tạo người dùng. |
 | Số liệu giả định sai | Trung bình | Đo baseline thật trước pilot; không dùng số giả định để cam kết hiệu quả. |
 | Mục tiêu quá tham vọng ("dưới 3 phút", "leo thang dưới 3%") | Trung bình | Đặt mục tiêu theo mức giảm tương đối và kiểm chứng bằng pilot. |
-
-**Việc cần làm tiếp theo:**
-1. Xin dữ liệu ticket mẫu đã ẩn danh và nhãn nhóm lỗi.
-2. Đo baseline: khối lượng ticket/ngày, thời gian xử lý từng bước, tỷ lệ leo thang.
-3. Vẽ sơ đồ `04-workflow-diagram.png` từ mục 1.1 (có 🔄 handoff, 🔴 bottleneck và tổng thời gian).
-4. Mở rộng bộ test tấn công ở mục 4 và thêm lớp Rule bằng code cho từ khóa an toàn.
