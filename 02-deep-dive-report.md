@@ -266,4 +266,3 @@ Chỉ trả JSON theo schema; không xuất văn bản bên ngoài JSON.
 
 ## 📝 Phase 6 — REFLECTION
 
-Nhật ký cá nhân ghi riêng trong `03-ai-log.md`: cách phát triển ý tưởng của Hoàng Nam; AI hỗ trợ mapping workflow và phản biện KPI; lý do tách phân loại khỏi chẩn đoán, rule khỏi LLM; các giả định được sửa và kết quả kiểm thử thực sự quan sát được. Không ghi khảo sát, dữ liệu hoặc kết quả chạy chưa có bằng chứng.
