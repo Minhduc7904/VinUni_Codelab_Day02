@@ -3,7 +3,7 @@
 > **Người thực hiện:** Nguyễn Minh Đức — AI Engineer, Vin Smart Future
 > **Phạm vi quét:** Vinpearl, VinWonders, Vinmec
 > **Tiêu chí lọc:** chỉ giữ bài toán (1) có dữ liệu đầu vào khách quan (giao dịch, cảm biến, hình ảnh, hồ sơ công việc), (2) kết quả kiểm chứng được bằng số, (3) tác động kinh doanh rõ ràng. Loại các bài toán phải *đoán ý định con người* (ví dụ: dự đoán khách có quay lại hay không).
-> **Lưu ý về số liệu:** Doanh thu thuần hợp nhất Vinpearl 2025 là 15.539 tỷ đồng (Báo cáo thường niên Vinpearl 2025). Mọi con số còn lại (tỷ lệ thất thoát, chi phí năng lượng, ngân sách nguyên liệu, thời gian xử lý) là **giả định để sàng lọc ý tưởng**, chưa được Vingroup xác nhận và cần đo baseline thực tế trước khi triển khai. Vinmec không có số liệu nội bộ nên dùng mô hình một cơ sở y tế giả định. Chi tiết phân tích nằm trong [ytuong.md](ytuong.md).
+> **Lưu ý về số liệu:** Doanh thu thuần hợp nhất Vinpearl 2025 là 15.539 tỷ đồng (Báo cáo thường niên Vinpearl 2025). Mọi con số còn lại (tỷ lệ thất thoát, chi phí năng lượng, ngân sách nguyên liệu, thời gian xử lý) là **giả định để sàng lọc ý tưởng**, chưa được Vingroup xác nhận và cần đo baseline thực tế trước khi triển khai. Vinmec không có số liệu nội bộ nên dùng mô hình một cơ sở y tế giả định.
 
 ---
 

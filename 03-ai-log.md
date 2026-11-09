@@ -1,7 +1,7 @@
 # AI Log & Reflection — Lab 02: AI Product Scoping
 
 > **Người viết:** Nguyễn Minh Đức (2A202603751) — Nhóm 101
-> **AI đã dùng:** Claude Code (trợ lý lập trình trong VS Code) để làm Phase 3–5, prototype và tài liệu; một trợ lý AI chat để brainstorm ở Phase 1–2 (kết quả nằm trong `ytuong.md`).
+> **AI đã dùng:** Claude Code (trợ lý lập trình trong VS Code) để làm Phase 3–5, prototype và tài liệu; một trợ lý AI chat để brainstorm ở Phase 1–2.
 > **Cách dùng:** AI là người đồng hành để soạn thảo và phản biện. Tôi quyết định đề tài, ranh giới và số liệu cuối cùng.
 
 ---
@@ -56,7 +56,7 @@
 ---
 
 ## 3. Những lần tôi chủ động phản biện AI
-- Từ đầu, tôi yêu cầu loại các bài toán phải **đoán ý định con người** (ví dụ dự đoán khách có quay lại không), chỉ giữ bài có dữ liệu khách quan, kết quả kiểm chứng được bằng số và tác động rõ (xem đầu `ytuong.md`).
+- Từ đầu, tôi yêu cầu loại các bài toán phải **đoán ý định con người** (ví dụ dự đoán khách có quay lại không), chỉ giữ bài có dữ liệu khách quan, kết quả kiểm chứng được bằng số và tác động rõ.
 - Tôi hỏi lại về đề tài prototype (mục 2.1) và hỏi vì sao báo cáo và sơ đồ khác nhau (mục 2.4), nên các chỗ đó được sửa.
 
 ---

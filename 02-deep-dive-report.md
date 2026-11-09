@@ -3,7 +3,7 @@
 > **Dự án:** Vin Smart Future × VinFast — AI hỗ trợ CSKH phân loại ticket bảo hành
 > **Nhóm:** Nhóm 101
 > **Thành viên:** Nguyễn Minh Đức (2A202603751), Đỗ Lý Hoàng Nam (2A202603777), Nguyễn Đức Minh (2A202603765), Hoàng Thế Phong (2A202603832)
-> **Nguồn ý tưởng:** Quick Problem Card #1 của Đỗ Lý Hoàng Nam, được nhóm chọn từ 15 ý tưởng cá nhân (xem [tong-hop-y-tuong.md](tong-hop-y-tuong.md)).
+> **Nguồn ý tưởng:** Quick Problem Card #1 của Đỗ Lý Hoàng Nam, được nhóm chọn từ 15 ý tưởng cá nhân của các thành viên.
 > **Lưu ý về số liệu:** các con số về thời gian xử lý, tỷ lệ leo thang và khối lượng ticket trong báo cáo này là **giả định để scoping**, lấy từ Quick Card của Nam hoặc do nhóm đặt ra để minh họa.
 
 ---
