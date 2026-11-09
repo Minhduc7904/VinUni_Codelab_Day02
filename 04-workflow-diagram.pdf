@@ -15,7 +15,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
 endobj
 6 0 obj
-<< /Length 2500 >>
+<< /Length 4894 >>
 stream
 0.96 0.97 0.98 rg
 0 0 842 595 re f
@@ -26,13 +26,13 @@ stream
 1 1 1 rg
 BT
 /F2 20 Tf
-30 555 Td
+1 0 0 1 30 555 Tm
 (VINFAST & VIN SMART FUTURE - CURRENT-STATE WORKFLOW MAPPING) Tj
 ET
 
 BT
 /F1 12 Tf
-30 535 Td
+1 0 0 1 30 535 Tm
 (Use Case: EV Warranty Claim & Battery Triage Co-pilot | Author: Hoang The Phong) Tj
 ET
 
@@ -45,10 +45,10 @@ ET
 0.11 0.21 0.34 rg
 BT
 /F2 10 Tf
-40 487 Td
+1 0 0 1 40 487 Tm
 (METRICS SUMMARY:) Tj
 /F1 10 Tf
-140 487 Td
+1 0 0 1 150 487 Tm
 (Total Manual Time: 40 min/ticket   |   Daily Volume: ~300 tickets   |   Escalation Rate: 18%   |   Bottlenecks: 2   |   Handoffs: 1) Tj
 ET
 
@@ -63,29 +63,29 @@ ET
 1 1 1 rg
 BT
 /F2 11 Tf
-40 422 Td
+1 0 0 1 40 422 Tm
 (STEP 1: Intake) Tj
 /F1 9 Tf
-40 411 Td
+1 0 0 1 40 411 Tm
 (Time: 3 min) Tj
 ET
 0.1 0.1 0.1 rg
 BT
 /F2 9 Tf
-38 385 Td
+1 0 0 1 38 385 Tm
 (Actor: CSKH) Tj
 /F1 8 Tf
-38 365 Td
+1 0 0 1 38 365 Tm
 (Channels:) Tj
-38 350 Td
+1 0 0 1 38 350 Tm
 (- VinFast App) Tj
-38 335 Td
+1 0 0 1 38 335 Tm
 (- Call Center 1900) Tj
-38 320 Td
+1 0 0 1 38 320 Tm
 (- Showroom walk-in) Tj
-38 290 Td
+1 0 0 1 38 290 Tm
 (Output: Raw Ticket) Tj
-38 275 Td
+1 0 0 1 38 275 Tm
 (Unstructured text) Tj
 ET
 
@@ -106,31 +106,31 @@ ET
 1 1 1 rg
 BT
 /F2 10 Tf
-205 422 Td
+1 0 0 1 205 422 Tm
 (STEP 2: Cross-Lookup) Tj
 /F2 9 Tf
-205 411 Td
+1 0 0 1 205 411 Tm
 (BOTTLENECK 1 [10 min]) Tj
 ET
 0.1 0.1 0.1 rg
 BT
 /F2 9 Tf
-203 385 Td
+1 0 0 1 203 385 Tm
 (Actor: CSKH Operator) Tj
 /F1 8 Tf
-203 365 Td
+1 0 0 1 203 365 Tm
 (- Login Salesforce CRM) Tj
-203 350 Td
+1 0 0 1 203 350 Tm
 (- Query VIN in DMS) Tj
-203 335 Td
+1 0 0 1 203 335 Tm
 (- Pull BMS battery log) Tj
-203 320 Td
+1 0 0 1 203 320 Tm
 (- Check vehicle history) Tj
 /F2 8 Tf
 0.8 0 0 rg
-203 290 Td
+1 0 0 1 203 290 Tm
 (Pain: Fragmented tools,) Tj
-203 275 Td
+1 0 0 1 203 275 Tm
 (slow multi-tab search) Tj
 ET
 
@@ -151,31 +151,31 @@ ET
 1 1 1 rg
 BT
 /F2 10 Tf
-370 422 Td
+1 0 0 1 370 422 Tm
 (STEP 3: Diagnostic) Tj
 /F2 9 Tf
-370 411 Td
+1 0 0 1 370 411 Tm
 (BOTTLENECK 2 [15 min]) Tj
 ET
 0.1 0.1 0.1 rg
 BT
 /F2 9 Tf
-368 385 Td
+1 0 0 1 368 385 Tm
 (Actor: CSKH Operator) Tj
 /F1 8 Tf
-368 365 Td
+1 0 0 1 368 365 Tm
 (- Analyze customer text) Tj
-368 350 Td
+1 0 0 1 368 350 Tm
 (- Triage: Pin vs Inverter) Tj
-368 335 Td
+1 0 0 1 368 335 Tm
 (- Check OBD error codes) Tj
-368 320 Td
+1 0 0 1 368 320 Tm
 (- Manual categorizing) Tj
 /F2 8 Tf
 0.8 0 0 rg
-368 290 Td
+1 0 0 1 368 290 Tm
 (Pain: Lack EV expertise,) Tj
-368 275 Td
+1 0 0 1 368 275 Tm
 (15% misclassification) Tj
 ET
 
@@ -196,31 +196,31 @@ ET
 1 1 1 rg
 BT
 /F2 10 Tf
-535 422 Td
-(STEP 4: Workshop Assign) Tj
+1 0 0 1 535 422 Tm
+(STEP 4: Assign Shop) Tj
 /F2 9 Tf
-535 411 Td
+1 0 0 1 535 411 Tm
 (HANDOFF [7 min]) Tj
 ET
 0.1 0.1 0.1 rg
 BT
 /F2 9 Tf
-533 385 Td
+1 0 0 1 533 385 Tm
 (Actor: CSKH <-> Workshop) Tj
 /F1 8 Tf
-533 365 Td
+1 0 0 1 533 365 Tm
 (- Find nearest center) Tj
-533 350 Td
+1 0 0 1 533 350 Tm
 (- Check battery pack inv) Tj
-533 335 Td
+1 0 0 1 533 335 Tm
 (- High-voltage tech slot) Tj
-533 320 Td
+1 0 0 1 533 320 Tm
 (- Internal ping x-team) Tj
 /F2 8 Tf
 0.9 0.4 0 rg
-533 290 Td
+1 0 0 1 533 290 Tm
 (Pain: Waiting for shop) Tj
-533 275 Td
+1 0 0 1 533 275 Tm
 (service foreman reply) Tj
 ET
 
@@ -241,31 +241,31 @@ ET
 1 1 1 rg
 BT
 /F2 11 Tf
-700 422 Td
+1 0 0 1 700 422 Tm
 (STEP 5: Resolution) Tj
 /F1 9 Tf
-700 411 Td
+1 0 0 1 700 411 Tm
 (Time: 5 min) Tj
 ET
 0.1 0.1 0.1 rg
 BT
 /F2 9 Tf
-698 385 Td
+1 0 0 1 698 385 Tm
 (Actor: CSKH Operator) Tj
 /F1 8 Tf
-698 365 Td
+1 0 0 1 698 365 Tm
 (- Draft confirmation SMS) Tj
-698 350 Td
+1 0 0 1 698 350 Tm
 (- Schedule appointment) Tj
-698 335 Td
+1 0 0 1 698 335 Tm
 (- Notify car owner) Tj
-698 320 Td
+1 0 0 1 698 320 Tm
 (- Close intake phase) Tj
 /F1 8 Tf
 0.1 0.5 0.1 rg
-698 290 Td
+1 0 0 1 698 290 Tm
 (Next: Vehicle physical) Tj
-698 275 Td
+1 0 0 1 698 275 Tm
 (inspection at workshop) Tj
 ET
 
@@ -279,7 +279,7 @@ ET
 0.11 0.21 0.34 rg
 BT
 /F2 11 Tf
-45 168 Td
+1 0 0 1 45 168 Tm
 (WORKFLOW NOTATION & AI OPPORTUNITY ANALYSIS:) Tj
 ET
 
@@ -288,7 +288,7 @@ ET
 45 142 12 12 re f
 BT
 /F2 9 Tf
-65 144 Td
+1 0 0 1 65 144 Tm
 (RED: Critical Bottlenecks (Step 2 & 3 - 25 min total) -> Primary target for LLM Auto-Extraction & AI Diagnostic Classifier) Tj
 ET
 
@@ -297,7 +297,7 @@ ET
 45 122 12 12 re f
 BT
 /F2 9 Tf
-65 124 Td
+1 0 0 1 65 124 Tm
 (ORANGE: Inter-departmental Handoff (Step 4 - 7 min) -> Target for Rule-based Workshop Capacity & Parts Routing API) Tj
 ET
 
@@ -306,7 +306,7 @@ ET
 45 102 12 12 re f
 BT
 /F2 9 Tf
-65 104 Td
+1 0 0 1 65 104 Tm
 (BLUE: Operational Steps -> Step 5 to be assisted with AI auto-drafting [DRAFT_ONLY] with Human-in-the-loop review) Tj
 ET
 
@@ -318,11 +318,11 @@ xref
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
-0000000244 00000 n 
-0000000326 00000 n 
-0000000413 00000 n 
+0000000251 00000 n 
+0000000321 00000 n 
+0000000396 00000 n 
 trailer
 << /Size 7 /Root 1 0 R >>
 startxref
-2970
+5342
 %%EOF
