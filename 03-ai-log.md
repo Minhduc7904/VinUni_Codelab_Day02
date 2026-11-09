@@ -1,4 +1,4 @@
-﻿# AI LOG & REFLECTION – QUÁ TRÌNH LỰA CHỌN VÀ PHÂN TÍCH BÀI TOÁN AI
+# AI LOG & REFLECTION – QUÁ TRÌNH LỰA CHỌN VÀ PHÂN TÍCH BÀI TOÁN AI
 
 **Ngày thực hiện:** 09/11/2026  
 **Công cụ:** ChatGPT/Codex, GitHub, Web Search  
@@ -91,3 +91,17 @@ Qua quá trình làm việc với AI, tôi rút ra ba bài học chính:
 Tôi dự kiến xây dựng prototype VinFast bằng dữ liệu giả lập, chạy các tình huống hợp lệ và đối kháng, ghi log kết quả, so sánh với baseline rule-only và cải thiện thiết kế. Sau đó mới xem xét đánh giá với dữ liệu được cấp quyền và quyết định điều kiện chuyển sang pilot.
 
 **Kết luận:** AI đã hỗ trợ hiệu quả trong quá trình Problem Discovery, Business Analysis và Solution Design. Kết quả hiện tại là một bản thiết kế và phân tích có cấu trúc, chưa phải giải pháp đã được kiểm chứng. Giá trị thực sự chỉ có thể khẳng định sau khi đo lường và thử nghiệm trong điều kiện thực tế.
+
+## 8. Bổ sung sau nhận xét thiếu sơ đồ và prototype
+
+Sau nhận xét bài Minh còn thiếu file sơ đồ và prototype, tôi tiếp tục dùng AI hỗ trợ triển khai code, vẽ sơ đồ và kiểm tra. Những mục trước ghi nhận trạng thái ở thời điểm chưa triển khai; phần này cập nhật kết quả mới.
+
+Đã có `04-workflow-diagram.png` mở độc lập, có script tái tạo, thể hiện 5 bước, người xử lý, đầu vào/đầu ra, handoff, thời gian và bottleneck. Ảnh đã được mở kiểm tra trực quan, không chỉ xác nhận file tồn tại.
+
+Code mẫu Xanh SM đã được thay bằng prototype VinFast: gọi Gemini qua SDK khi bật `--live`, dùng JSON Schema, kiểm tra tham chiếu xe/xưởng, evidence, quyền duyệt và side effect. Mặc định chạy validator cục bộ, ghi rõ không gọi Gemini. Kết quả **18/18 kiểm thử hợp đồng cục bộ đạt**, lưu tại [log kiểm thử](artifacts/prototype-local-results.json). Đây không phải bằng chứng 6 prompt đối kháng đã vượt kiểm thử mô hình.
+
+Một điểm cần sửa trong lúc rà code là fallback chung có thể hạ ca khẩn thành `needs_review`. Logic được bổ sung để giữ `critical_review` khi khớp từ khóa SOP giả lập, cùng kiểm thử chặn hạ ưu tiên. Bộ từ khóa này chưa đầy đủ và chưa được chuyên gia phê duyệt, không thể xem là bộ phát hiện nguy hiểm dùng thực tế.
+
+Autograder xác nhận đủ 4 file bắt buộc. Phần code được 3,5/5 theo công cụ hiện tại: hàm gọi SDK, test cases và script chạy đạt; bộ chấm còn đòi từ khóa Xanh SM và output kiểm thử mô hình. Không sửa autograder hoặc thêm từ khóa không liên quan để vượt kiểm tra. Điểm công cụ này khác bảng G1–I3 trong nhận xét review.
+
+**Còn thiếu:** Môi trường chưa có khóa Gemini nên chưa gọi API thật. Cần chạy live, đọc từng output bằng rubric nội dung và ghi cả lỗi quan sát được trước khi cập nhật đánh giá mô hình. Kết quả cục bộ không đủ để đổi quyết định pilot vận hành từ NOT YET sang GO.

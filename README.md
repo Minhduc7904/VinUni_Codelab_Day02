@@ -2,6 +2,36 @@
 
 Tài liệu này hướng dẫn chi tiết cách thiết lập môi trường lập trình Python, cấu hình API Key, quy trình phân nhánh Git làm việc nhóm và chuẩn bị sản phẩm nộp bài cho **Lab 02: AI Product Scoping (Vin Smart Future)**.
 
+## Bài làm của Minh — trạng thái và cách chạy
+
+**Nhánh cá nhân:** `NguyenDucMinh2A202603765`  
+**Đề tài Deep-Dive:** VinFast Smart Warranty Triage Co-pilot — phân loại và điều phối khiếu nại bảo hành xe điện.
+
+| Yêu cầu nộp bài | Tài liệu / mã nguồn | Trạng thái |
+|---|---|---|
+| Scan và 3 Quick Problem Cards | [01-problem-scan.md](01-problem-scan.md) | Có 5 cơ hội và 3 thẻ cá nhân Vinhomes/Vinmec; lý do chuyển đề tài được giải thích trong Deep-Dive. |
+| Workflow, Problem Statement 6 trường, AI Fit, HITL, fallback và Evaluate | [02-deep-dive-report.md](02-deep-dive-report.md) | Đã có; số liệu giả định được ghi rõ, quyết định pilot là NOT YET. |
+| AI Log & Reflection | [03-ai-log.md](03-ai-log.md) | Đã có; phân biệt kết quả cục bộ và phần chưa kiểm chứng. |
+| Sơ đồ file riêng | [04-workflow-diagram.png](04-workflow-diagram.png) | Đã xuất và mở kiểm tra; có bước, handoff, thời gian và bottleneck. |
+| Prototype Python | [prompt_prototype.py](starter-code/prompt_prototype.py) | Đã triển khai SDK, schema, validator và 6 ca đối kháng + 1 ca hợp lệ; chưa chạy Gemini thật. |
+| Bằng chứng kiểm tra | [Hướng dẫn và log](05-prototype-validation.md) | 18/18 kiểm thử cục bộ đạt; autograder phần file 5/5, phần code 3,5/5. |
+
+**Chưa hoàn thành toàn bộ yêu cầu thực nghiệm:** Chưa cấu hình API key nên chưa có log gọi Gemini thật và đánh giá nội dung đầu ra. Điểm autograder không thay thế đánh giá rubric; công cụ còn kiểm tra từ khóa của bài mẫu Xanh SM. Không coi kiểm thử validator là kiểm thử mô hình.
+
+Từ thư mục gốc, trên Windows có sẵn `.venv`, chạy kiểm thử cục bộ không cần khóa:
+
+```powershell
+.\.venv\Scripts\python.exe starter-code/prompt_prototype.py
+```
+
+Sau khi cấu hình `GEMINI_API_KEY` hoặc `GOOGLE_API_KEY` trong terminal cục bộ theo mục 2, chạy API thật:
+
+```powershell
+.\.venv\Scripts\python.exe starter-code/prompt_prototype.py --live --output artifacts/prototype-live-results.json
+```
+
+Chế độ live dừng với lỗi nếu thiếu khóa; không thay bằng output giả. Xem [hướng dẫn kiểm chứng](05-prototype-validation.md) để đọc kết quả và giới hạn. Các phần bên dưới giữ quy trình thiết lập và nộp bài chung của lab.
+
 ---
 
 ## 🛠️ 1. Hướng dẫn thiết lập Môi trường ảo (`.venv`)
@@ -9,7 +39,7 @@ Tài liệu này hướng dẫn chi tiết cách thiết lập môi trường l�
 Môi trường ảo (virtual environment) giúp cô lập các thư viện của dự án này, tránh xung đột với các phiên bản thư viện khác cài trên máy của bạn.
 
 ### 💻 Bước 1: Tạo môi trường ảo
-Mở terminal tại thư mục gốc của dự án (`VinUni_Day02-AI-Product-Lab`) và chạy lệnh tương ứng với hệ điều hành của bạn:
+Mở terminal tại thư mục gốc của dự án (`VinUni_Codelab_Day02`) và chạy lệnh tương ứng với hệ điều hành của bạn:
 
 *   **Windows (PowerShell hoặc CMD):**
     ```powershell
@@ -21,7 +51,7 @@ Mở terminal tại thư mục gốc của dự án (`VinUni_Day02-AI-Product-La
     ```
 
 ### 🔌 Bước 2: Kích hoạt (Activate) môi trường ảo
-Bạn phải kích hoạt môi trường ảo mỗi khi mở terminal mới trước khi chạy code.
+Kích hoạt môi trường ảo trong terminal để dùng lệnh `python` và các thư viện của dự án. Nếu gọi trực tiếp `.venv\Scripts\python.exe` trên Windows thì không cần kích hoạt.
 
 *   **Windows (PowerShell):**
     ```powershell
@@ -41,7 +71,7 @@ Bạn phải kích hoạt môi trường ảo mỗi khi mở terminal mới trư
 ### 📥 Bước 3: Cài đặt thư viện cần thiết
 Chạy lệnh sau để cài đặt SDK của Gemini và các thư viện hỗ trợ:
 ```bash
-pip install google-genai google-generativeai pytest
+python -m pip install -r requirements.txt
 ```
 
 ---

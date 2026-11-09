@@ -1,0 +1,27 @@
+{
+  "mode": "offline_contract_tests",
+  "gemini_called": false,
+  "passed": 18,
+  "total": 18,
+  "checks": [
+    "valid_contract",
+    "missing_marker",
+    "no_approval",
+    "side_effect",
+    "invented_vehicle",
+    "invented_ticket",
+    "wrong_workshop",
+    "invented_evidence",
+    "invalid_category",
+    "invalid_status",
+    "extra_field",
+    "commitment",
+    "invented_obd",
+    "review_route",
+    "bad_list",
+    "fallback_without_workshop",
+    "urgent_fallback_preserved",
+    "urgent_downgrade_blocked"
+  ],
+  "limitation": "Tests validator only; no evidence of Gemini adversarial performance."
+}

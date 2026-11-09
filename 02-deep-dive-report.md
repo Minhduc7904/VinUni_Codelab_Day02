@@ -6,7 +6,7 @@
 
 **Nguồn ý tưởng:** Phát triển từ [báo cáo của Đỗ Lý Hoàng Nam]
 
-> **Trạng thái bằng chứng:** Các thông tin về CRM/DMS, quy trình, thời gian và quy mô ticket dưới đây là giả định thiết kế tham khảo từ bài của Hoàng Nam, cần xác minh với VinFast. Chưa có dữ liệu nội bộ, log chạy prototype hoặc xác nhận stakeholder trong bài làm này. Không coi các con số về 50.000 log, chi phí API, độ trễ hay ROI trong bài tham khảo là kết quả đã được kiểm chứng.
+> **Trạng thái bằng chứng:** Các thông tin về CRM/DMS, quy trình, thời gian và quy mô ticket dưới đây là giả định thiết kế tham khảo từ bài của Hoàng Nam, cần xác minh với VinFast. Chưa có dữ liệu nội bộ, log gọi Gemini thật hoặc xác nhận stakeholder. Đã có log kiểm thử validator cục bộ; kết quả này không chứng minh chất lượng mô hình. Không coi các con số về 50.000 log, chi phí API, độ trễ hay ROI trong bài tham khảo là kết quả đã được kiểm chứng.
 
 ---
 
@@ -22,6 +22,14 @@ Bài toán được lựa chọn vì có tác vụ ngôn ngữ rõ ràng để L
 ## 🏗️ Phase 3 — DEEP-DIVE
 
 ### 3.1. Current-State Workflow Mapping
+
+![Quy trình hiện tại VinFast: thời gian, handoff và bottleneck](04-workflow-diagram.png)
+
+**File nộp riêng:** [04-workflow-diagram.png](04-workflow-diagram.png). Tái tạo bằng `powershell -File scripts/export_workflow.ps1` trên Windows.
+
+![Quy tr?nh hi?n t?i VinFast: c?c b??c, th?i gian, bottleneck v? handoff](04-workflow-diagram.png)
+
+**File n?p ri?ng:** [04-workflow-diagram.png](04-workflow-diagram.png). C? th? t?i t?o b?ng `powershell -File scripts/export_workflow.ps1` tr?n Windows.
 
 #### Sơ đồ quy trình hiện tại
 
@@ -176,7 +184,7 @@ ca khẩn/tranh chấp, lỗi output                       │
 
 **Mục tiêu:** Theo yêu cầu lab, đặc tả thử nghiệm Python trên **Gemini 2.5 Flash** để kiểm tra phân loại và ranh giới nháp. File thực hành: [starter-code/prompt_prototype.py](starter-code/prompt_prototype.py).
 
-**Trạng thái:** Chưa cập nhật/chạy file Python cho đề tài VinFast trong lần sửa báo cáo này. Các kiểm thử dưới đây là kế hoạch, chưa phải kết quả pass thực tế.
+**Trạng thái cập nhật:** Đã triển khai prototype VinFast bằng Google Gen AI SDK, JSON Schema, validator và fallback. Đã chạy **18/18 kiểm thử hợp đồng cục bộ**; chưa gọi Gemini thật vì chưa có API key. Sáu ca đối kháng bên dưới vẫn chưa có kết quả từ mô hình. Xem [hướng dẫn và giới hạn](05-prototype-validation.md), [log cục bộ](artifacts/prototype-local-results.json).
 
 ### System Prompt đề xuất
 
@@ -242,7 +250,7 @@ Chỉ trả JSON theo schema; không xuất văn bản bên ngoài JSON.
 | Hạng mục | Đánh giá hiện tại | Bằng chứng cần có |
 |---|---|---|
 | **Dữ liệu mẫu/logs sạch để test?** | Chưa được cung cấp dữ liệu bảo hành thật; chưa xác minh số lượng hoặc chất lượng dữ liệu trong bài tham khảo. | Ticket khử định danh, taxonomy, nhãn chuyên gia, danh mục xưởng có phiên bản và quyền sử dụng dữ liệu. |
-| **Rủi ro khi AI sai trong tầm kiểm soát qua HITL/Fallback?** | Đã thiết kế ranh giới, chưa kiểm thử thực thi. | Log kiểm thử prompt, phân quyền, chống gửi lặp, dữ liệu cũ, lỗi API và luồng ca khẩn. HITL giảm rủi ro, không loại bỏ hoàn toàn. |
+| **Rủi ro khi AI sai trong tầm kiểm soát qua HITL/Fallback?** | Đã chạy 18 kiểm thử hợp đồng cục bộ. Chưa kiểm thử Gemini thật hoặc tích hợp CRM/DMS. | Log kiểm thử prompt, phân quyền, chống gửi lặp, dữ liệu cũ, lỗi API và luồng ca khẩn. HITL giảm rủi ro, không loại bỏ hoàn toàn. |
 | **Stakeholders sẵn sàng thay đổi quy trình?** | Chưa có xác nhận trong bài làm. | Đại diện CSKH, kỹ thuật, xưởng và quản trị dữ liệu đồng ý phạm vi, người duyệt, KPI, SOP và nguồn lực pilot. |
 
 ### Quyết định đề xuất
@@ -251,7 +259,7 @@ Chỉ trả JSON theo schema; không xuất văn bản bên ngoài JSON.
 - [x] **NOT YET — Chuẩn bị dữ liệu, baseline và kiểm thử trước khi pilot thực tế.**
 - [ ] **NO-GO — Không khả thi hoặc rule-based tốt hơn.**
 
-**Justification:** Hướng LLM + rule của Hoàng Nam phù hợp với việc hiểu khiếu nại không cấu trúc và giới hạn điều phối bằng dữ liệu có kiểm soát. Có thể xây demo offline bằng dữ liệu giả lập để học và kiểm thử. Tuy nhiên, bài làm hiện chưa có dữ liệu nội bộ, kết quả thực nghiệm, đo chi phí hoặc xác nhận stakeholder để quyết định GO cho pilot vận hành. Vì vậy báo cáo chọn NOT YET thay vì kế thừa kết luận GO trong bài tham khảo. Đây là đề xuất đánh giá của bài lab, không phải quyết định thực tế của Ban Giám Đốc.
+**Justification:** Hướng LLM + rule của Hoàng Nam phù hợp với việc hiểu khiếu nại không cấu trúc và giới hạn điều phối bằng dữ liệu có kiểm soát. Có thể xây demo offline bằng dữ liệu giả lập để học và kiểm thử. Tuy nhiên, bài làm mới có kiểm thử cục bộ, chưa có dữ liệu nội bộ, kết quả Gemini thật, đo chi phí hoặc xác nhận stakeholder để quyết định GO cho pilot vận hành. Vì vậy báo cáo chọn NOT YET thay vì kế thừa kết luận GO trong bài tham khảo. Đây là đề xuất đánh giá của bài lab, không phải quyết định thực tế của Ban Giám Đốc.
 
 ### Điều kiện chuyển sang GO
 
@@ -266,3 +274,21 @@ Chỉ trả JSON theo schema; không xuất văn bản bên ngoài JSON.
 
 ## 📝 Phase 6 — REFLECTION
 
+
+
+Xem [03-ai-log.md](03-ai-log.md) để theo dõi bài học và kết quả kiểm tra mới.
+
+## Phụ lục — Ngân sách thời gian mục tiêu và trách nhiệm
+
+Đây là mục tiêu cần đo trong pilot, chưa phải kết quả thực nghiệm:
+
+| Bước | Hiện tại giả định | Mục tiêu pilot | Người chịu trách nhiệm |
+|---|---:|---:|---|
+| Tiếp nhận, xác minh | 3 phút | 1 phút | CSKH |
+| Truy xuất, đối chiếu | 10 phút | 1 phút | Backend; CSKH kiểm tra thiếu dữ liệu |
+| Phân loại, kiểm tra đề xuất | 15 phút | 2 phút | LLM đề xuất; CSKH/kỹ thuật duyệt |
+| Đối chiếu xưởng | 7 phút | 2 phút | Rule lọc; CSKH/xưởng xác nhận |
+| Sửa nháp, duyệt, phản hồi | 5 phút | 4 phút | CSKH duyệt; backend thực thi đúng quyền |
+| **Tổng** | **40 phút** | **10 phút** | Gồm thao tác duyệt; thời gian chờ đo riêng |
+
+Thời gian xử lý thủ công/fallback vẫn phải tính vào KPI chung. Ca khẩn đi theo SOP ưu tiên, không bị ép vào ngân sách ca thường.
