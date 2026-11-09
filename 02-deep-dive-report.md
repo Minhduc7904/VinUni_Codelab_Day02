@@ -8,12 +8,15 @@
 
 ## 🏛️ 1. Bối cảnh & Lý do lựa chọn bài toán
 
-Trong bối cảnh hợp nhất công nghệ tại **Vin Smart Future**, chúng tôi nghiên cứu bài toán tối ưu hóa quy trình tiếp nhận và phân loại khiếu nại bảo hành cho các dòng xe điện thông minh VinFast (VF5, VF6, VF7, VF8, VF9).
+Trong khuôn khổ sáng kiến công nghệ tại **Vin Smart Future**, chúng tôi nghiên cứu bài toán tối ưu hóa quy trình tiếp nhận và phân loại khiếu nại bảo hành cho các dòng xe điện thông minh VinFast (VF5, VF6, VF7, VF8, VF9).
 
-### Lý do lựa chọn bài toán:
-1. **Trải nghiệm khách hàng sống còn:** Trong ngành ô tô điện, thời gian phản hồi khi xe gặp trục trặc là yếu tố then chốt giữ chân người dùng. Khiếu nại bị tắc nghẽn sẽ trực tiếp làm suy giảm uy tín thương hiệu xe điện quốc gia.
-2. **Điểm nghẽn thủ công rõ rệt:** Chuyên viên CSKH hiện phải tra cứu chéo qua nhiều công cụ rời rạc (CRM Salesforce, DMS xưởng, log viễn thông pin), tốn trung bình **40 phút / ticket**, dẫn đến **18% khiếu nại bị leo thang (escalated)** do vi phạm thời gian cam kết (SLA).
-3. **Phù hợp với giải pháp AI thực tế (High AI Fit):** Ngôn ngữ mô tả lỗi bằng tiếng Việt của khách hàng rất đa dạng, giàu sắc thái và không có cấu trúc cố định. LLM kết hợp với Rule-based Router là công cụ hoàn hảo để xử lý văn bản, trích xuất thực thể và dự thảo phản hồi dưới sự giám sát của con người (Human-in-the-loop).
+> **📌 [Bản ghi Điều chỉnh & Minh bạch hóa Số liệu (Data Transparency Changelog)]:**  
+> Trong các bản thảo ban đầu của nhóm, các số liệu vận hành có sự dao động (25–40 phút, 180 giờ/ngày, giảm 70% thời gian). Sau quá trình rà soát mô hình toán học và tiếp thu phản biện kỹ thuật, nhóm đã chuẩn hóa toàn bộ các biến số theo một mô hình nhất quán:
+> - Thời gian xử lý thủ công chuẩn: **40 phút / ticket** (chi tiết tại mục 3.1).
+> - Quy mô vận hành giả lập: **300 ticket / ngày**.
+> - Tổng thời gian tiêu tốn: $300 \times 40\text{ phút} = 12.000\text{ phút} = \mathbf{200}\text{ giờ làm việc/ngày}$.
+> - Mục tiêu cắt giảm xuống dưới 3 phút/ticket tương đương mức tối ưu $\mathbf{\approx 92.5\%}$ thời gian xử lý thủ công.
+> *(Toàn bộ các số liệu này được xây dựng theo phương pháp [Mô phỏng Giả định Nghiên cứu / Simulated Desk Research], chưa phải dữ liệu đo đạc nội bộ từ cơ sở dữ liệu sản xuất của VinFast).*
 
 ---
 
@@ -21,7 +24,7 @@ Trong bối cảnh hợp nhất công nghệ tại **Vin Smart Future**, chúng 
 
 ## 3.1. Current-State Workflow Mapping (Quy trình hiện tại)
 
-Quy trình tiếp nhận và xử lý khiếu nại bảo hành xe điện hiện tại gồm 5 bước thủ công:
+Quy trình tiếp nhận và phân loại khiếu nại bảo hành xe điện hiện tại gồm 5 bước tuần tự hoàn toàn thủ công:
 
 ```text
 ┌────────────────┐     ┌────────────────┐     ┌────────────────┐     ┌────────────────┐     ┌────────────────┐
@@ -36,9 +39,9 @@ Quy trình tiếp nhận và xử lý khiếu nại bảo hành xe điện hiệ
 │ Out: Ticket thô│     │ Out: Spec & Log│     │ Out: Nhãn lỗi  │     │ Out: ID Xưởng  │     │ Out: SMS/Email │
 └────────────────┘     └────────────────┘     └────────────────┘     └────────────────┘     └────────────────┘
 
-🔴 = Bottlenecks: Bước 2 (10 min) & Bước 3 (15 min) tiêu tốn tới 25 phút đọc mô tả dài, tra cứu chéo CRM/DMS.
-🔄 = Handoff: Bước 4 (7 min) là điểm chuyển giao giữa tổng đài CSKH và Xưởng trưởng xưởng dịch vụ.
-⏱ Tổng thời gian xử lý thủ công: 3 + 10 + 15 + 7 + 5 = 40 phút / ticket.
+🔴 = Bottlenecks: Bước 2 (10 min) & Bước 3 (15 min) ngốn tới 25 phút đọc văn bản dài, tra cứu chéo hệ thống phân mảnh.
+🔄 = Handoff: Bước 4 (7 min) là điểm chuyển giao giữa tổng đài CSKH và Xưởng dịch vụ ủy quyền.
+⏱ Tổng thời gian vận hành thủ công: 3 + 10 + 15 + 7 + 5 = 40 phút / ticket.
 ```
 
 ---
@@ -52,7 +55,7 @@ Quy trình tiếp nhận và xử lý khiếu nại bảo hành xe điện hiệ
 | **3. Bottleneck** | **Bước 2 & Bước 3 (chiếm 25 phút):** CSKH không có chuyên môn sâu về kỹ thuật ô tô điện, mất nhiều thời gian đọc văn bản tiếng Việt dài dòng của khách và tra cứu đối chiếu. Tỷ lệ phân loại nhầm xưởng dịch vụ (xưởng thiếu thiết bị chuyên dụng hoặc kỹ thuật viên cao áp) ước tính khoảng 15% *[Giả định]* . |
 | **4. Business Impact** | Quy mô ước tính ~300 ticket khiếu nại/ngày trên toàn hệ thống *[Giả định quy mô vận hành]*. Với 40 phút/ticket, tổng thời gian xử lý tiêu tốn **300 × 40 phút = 12.000 phút = 200 giờ làm việc/ngày** của đội ngũ CSKH. Tỷ lệ chậm SLA phản hồi dẫn đến **18% khiếu nại bị leo thang (escalated complaints)**, gây áp lực nhân sự và ảnh hưởng tiêu cực đến hình ảnh thương hiệu xe điện VinFast. |
 | **5. Success Metric** | 1. **Hiệu suất vận hành (Efficiency):** Giảm thời gian phân loại và xử lý ticket từ 40 phút ──> **dưới 3 phút/ticket** (cắt giảm **92.5%** thời gian xử lý thủ công ban đầu).<br>2. **Độ chính xác (Quality):** Độ chính xác phân loại danh mục triệu chứng và xưởng dịch vụ đạt **≥ 92%**.<br>3. **Trải nghiệm khách hàng (Trust):** Giảm tỷ lệ khiếu nại leo thang do chậm SLA từ 18% ──> **dưới 3%**.<br>*(Ghi chú: Toàn bộ mục tiêu metric là [Giả định thiết kế KPI dự án])* |
-| **6. Operational Boundary (Ranh giới vận hành)** | **Quyền hạn được phép:**<br>- Trích xuất thông tin có cấu trúc (VIN, model, triệu chứng mô tả).<br>- Phân loại nhóm lỗi sơ bộ (Hardware, Software, Infotainment, Battery symptoms).<br>- Gợi ý xưởng dịch vụ ủy quyền phù hợp dựa trên bảng quy tắc khoảng cách và năng lực xưởng.<br>- Soạn bản nháp (draft) phiếu chuyển việc và thư phúc đáp khách hàng có tiền tố `[DRAFT_ONLY]`.<br><br>**Ranh giới nghiêm ngặt (TUYỆT ĐỐI CẤM):**<br>- **CẤM** AI tự động phê duyệt bồi thường tài chính, hứa hẹn đổi pin mới miễn phí hoặc cam kết thời hạn bảo hành khi chưa có biên bản giám định thực tế của Kỹ sư xưởng.<br>- **CẤM** AI tự phỏng đoán hay gán mã lỗi OBD chính thức (mã lỗi kỹ thuật bắt buộc phải đọc bằng thiết bị chẩn đoán chuyên dụng tại xưởng).<br>- **CẤM** AI tự động gửi tin nhắn/email cho khách hàng mà chưa có nút click duyệt của Chuyên viên CSKH (Bắt buộc Human-in-the-loop).<br>- **TIỀN LỌC AN TOÀN NGUY CẤP (Pre-LLM Guardrail):** Nếu nội dung chứa từ khóa nguy cơ cháy nổ / tai nạn (`khói`, `cháy`, `mùi khét`, `mất phanh`, `nổ pin`, `rò điện`), hệ thống **NGẮT LẬP TỨC KHÔNG CHO LLM XỬ LÝ**, chuyển thẳng sang đường dây nóng Đội Cứu hộ Khẩn cấp 24/7. |
+| **6. Operational Boundary (Ranh giới vận hành)** | **Quyền hạn được phép:**<br>- Trích xuất thông tin có cấu trúc (VIN, model, triệu chứng mô tả).<br>- Phân loại nhóm lỗi sơ bộ (Hardware, Software, Infotainment, Battery symptoms).<br>- Gợi ý xưởng dịch vụ ủy quyền phù hợp dựa trên bảng quy tắc khoảng cách và năng lực xưởng.<br>- Soạn bản nháp (draft) phiếu chuyển việc và thư phúc đáp khách hàng có tiền tố `[DRAFT_ONLY]`.<br><br>**Ranh giới nghiêm ngặt (TUYỆT ĐỐI CẤM):**<br>- **CẤM** AI tự động phê duyệt bồi thường tài chính, hứa hẹn đổi pin mới miễn phí hoặc cam kết thời hạn bảo hành khi chưa có biên bản giám định thực tế của Kỹ sư xưởng.<br>- **CẤM** AI tự phỏng đoán hay gán mã lỗi OBD chính thức (mã lỗi kỹ thuật bắt buộc phải đọc bằng thiết bị chẩn đoán chuyên dụng tại xưởng).<br>- **CẤM** AI tự động gửi tin nhắn/email cho khách hàng mà chưa có nút click duyệt của Chuyên viên CSKH (Bắt buộc Human-in-the-loop).<br>- **TIỀN LỌC AN TOÀN NGUY CẤP (Pre-LLM Guardrail):** Đã được cài đặt trực tiếp trong mã nguồn Python (`pre_llm_safety_filter`), nếu nội dung chứa từ khóa nguy cơ cháy nổ / tai nạn (`khói`, `cháy`, `mùi khét`, `mất phanh`, `nổ pin`, `rò điện`), hệ thống **NGẮT LẬP TỨC KHÔNG CHO LLM XỬ LÝ**, chuyển thẳng sang đường dây nóng Đội Cứu hộ Khẩn cấp 24/7. |
 
 ---
 
@@ -80,25 +83,32 @@ Quy trình tiếp nhận và xử lý khiếu nại bảo hành xe điện hiệ
                           └─────────────────┘               └─────────────────────────────┘
 ```
 
-* 🔴 **Pre-LLM Safety Filter (Rule-based):** Quét từ khóa an toàn nguy cấp trước khi gửi payload tới LLM.
+* 🔴 **Pre-LLM Safety Filter (Rule-based Code):** Đã hiện thực hóa bằng hàm Python `pre_llm_safety_filter` để ngắt kết nối trước khi payload truyền tới Gemini API.
 * 🔵 **AI Step (LLM):** Bóc tách thực thể (Số VIN 17 ký tự, Model xe, Nhóm triệu chứng nghi ngờ: *Infotainment, Điều hòa, Sạc pin, Khung gầm*), sinh bản nháp phản hồi mở đầu bằng tiền tố `[DRAFT_ONLY]`.
 * 🟢 **Human Step (HITL):** Chuyên viên CSKH chỉ mất 30–60 giây đọc lướt bản tóm tắt và ấn xác nhận để chuyển ticket đến Xưởng dịch vụ.
-* ↩️ **Fallback Plan:** Không dựa vào độ tự tin tự khai của LLM (self-reported confidence), mà kiểm tra bằng **Schema Validation** (Pydantic): Nếu số VIN không đủ 17 ký tự, hoặc thiếu trường thông tin cốt lõi, ticket lập tức rơi vào hàng đợi `Manual Triage Queue` để Kỹ sư dịch vụ xử lý thủ công.
+* ↩️ **Fallback Plan (Pydantic Schema Validation):** Đã cài đặt Pydantic Model `WarrantyTriageTicket`. Nếu dữ liệu trả về thiếu trường bắt buộc hoặc số VIN không đủ 17 ký tự chuẩn ISO 3779, ticket lập tức rơi vào hàng đợi `Manual Triage Queue` để Kỹ sư dịch vụ xử lý thủ công.
 
 ---
 
 # 🏁 Phase 5 — EVALUATE: Đánh giá độ sẵn sàng & Quyết định
 
-### 1. AI Readiness Checklist:
-* [x] **Dữ liệu mẫu/logs:** Có khả năng trích xuất 500 ticket lịch sử đã ẩn danh hóa thông tin cá nhân (PII) để phục vụ Prompt Engineering và Benchmark kiểm thử *[Giả định kế hoạch chuẩn bị dữ liệu]*.
-* [x] **Kiểm soát rủi ro an toàn:** Rủi ro được kiểm soát đa tầng nhờ: (1) Pre-LLM filter bắt cháy nổ; (2) Ranh giới cấm AI tự duyệt tài chính; (3) Human-in-the-loop bắt buộc ở khâu gửi tin.
-* [x] **Độ sẵn sàng của Stakeholders:** CSKH và Xưởng dịch vụ có nhu cầu giảm tải rõ rệt đối với các lỗi phần mềm thường gặp.
+### 1. AI Readiness Checklist (Đánh giá trung thực, không tô hồng):
+* [ ] **Dữ liệu mẫu/logs sạch để test:** `CHƯA CÓ SẴN (NOT YET)` — Hiện tại nhóm chưa tiếp cận được dữ liệu log production thực tế của VinFast do rào cản bảo mật dữ liệu khách hàng (PII). Đang lập kế hoạch trích xuất và gán nhãn 500 ticket mô phỏng trong vòng 2 tuần.
+* [x] **Rủi ro khi AI sai có nằm trong tầm kiểm soát:** `ĐẠT (YES)` — Nhờ kiến trúc phòng thủ đa tầng: (1) Pre-LLM filter chặn cháy nổ; (2) Rule 3 cấm cam kết tài chính; (3) Human-in-the-loop bắt buộc ở khâu gửi tin.
+* [ ] **Stakeholders sẵn sàng thay đổi quy trình:** `CHƯA XÁC NHẬN (NOT YET)` — Chưa thực hiện phỏng vấn chính thức với Ban Giám đốc VinFast hay Trưởng xưởng dịch vụ. Cần tổ chức buổi Workshop nghiệp vụ để thống nhất giao diện chuyển giao vé.
+
+---
 
 ### 2. Quyết định của Vin Smart Future:
-**[x] GO CÓ ĐIỀU KIỆN (Conditional GO — Giai đoạn Pilot Phạm vi hẹp)**
+**[x] NOT YET (Chưa thể GO đại trà — Cần hoàn thiện Pilot chuẩn bị dữ liệu và khảo sát Stakeholders)**  
+*(Nếu Ban Giám Đốc muốn triển khai sớm, nhóm đề xuất **Conditional Pilot** chỉ giới hạn tại 01 Xưởng Dịch vụ Hà Nội cho nhóm lỗi Phần mềm VF8).*
 
-### 3. Justification (Lý giải kỹ thuật & chi phí dựa trên bằng chứng và giả định):
-* **Phạm vi Pilot hẹp an toàn (Scope Boundaries):** Không triển khai đại trà ngay lập tức. Trong giai đoạn 1 (4 tuần), dự án chỉ thí điểm tại **01 Xưởng Dịch vụ VinFast Hà Nội** và **chỉ áp dụng cho nhóm lỗi Phần mềm Điều khiển & Tiện ích (Infotainment/HVAC) trên dòng xe VF8**. Nhóm lỗi Pin cao áp và Hệ thống truyền động tiếp tục xử lý theo quy trình kỹ thuật truyền thống.
-* **Chi phí vận hành mô hình (Model Cost):** Sử dụng API **Gemini 2.5 Flash** với chi phí ước tính khoảng **~0.001 USD / ticket** *[Giả định giá API Google AI Studio hiện hành]*. Với 300 ticket/ngày, chi phí API chỉ khoảng 0.30 USD/ngày (~7.500 VNĐ/ngày), hoàn toàn không đáng kể so với lợi ích tiết kiệm thời gian.
-* **Tỷ suất ROI kỳ vọng:** Tiết kiệm ước tính ~180 giờ làm việc/ngày cho khối CSKH nếu triển khai toàn diện, giảm tỷ lệ ticket trễ hẹn và nâng cao chỉ số hài lòng khách hàng (CSAT).
-* **Kế hoạch tích lũy dữ liệu:** Sau 4 tuần pilot, nhóm sẽ đo lường độ chính xác phân loại thực tế dựa trên đánh giá của Kỹ thuật viên xưởng trước khi quyết định mở rộng quy mô.
+---
+
+### 3. Justification (Lý giải quyết định dựa trên bằng chứng kỹ thuật và chi phí):
+* **Lý do KHÔNG GO ngay lập tức:** Dựa trên checklist, 2 trong 3 điều kiện tiên quyết (dữ liệu sạch và sự cam kết của stakeholders) chưa được xác thực bằng bằng chứng thực địa. Việc triển khai ngay một mô hình AI vào quy trình bảo hành ô tô điện khi chưa có tập benchmark chuẩn sẽ tạo ra rủi ro pháp lý và an toàn vận hành.
+* **Lộ trình chuẩn bị 4 tuần (Preparation Roadmap):**
+  1. *Tuần 1-2:* Phối hợp cùng Tổ Kỹ thuật Hậu mãi thu thập và gán nhãn tập dữ liệu 500 ticket mẫu đã ẩn danh thông tin cá nhân.
+  2. *Tuần 3:* Đo lường độ chính xác phân loại của Gemini 2.5 Flash trên tập dữ liệu này (Mục tiêu: Đạt F1-score ≥ 90% trước khi cho chạy thử).
+  3. *Tuần 4:* Tổ chức phỏng vấn CSKH và Cố vấn Dịch vụ để đánh giá độ thân thiện của giao diện Human-in-the-loop.
+* **Chi phí thử nghiệm (Simulation Cost):** Sử dụng API Gemini 2.5 Flash trong giai đoạn thử nghiệm chỉ tốn ước tính **~0.30 USD / ngày** (~7.500 VNĐ/ngày cho 300 ticket), chi phí cực kỳ tối ưu để tích lũy dữ liệu trước khi ra quyết định GO chính thức.
